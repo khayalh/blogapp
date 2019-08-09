@@ -1,0 +1,90 @@
+﻿@model Blogge.Models.ViewModels.BigPostViewModel
+
+@using Microsoft.AspNet.Identity
+@using Blogge.Models.Enums
+
+
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-lg-8">
+
+            <h1 class="mt-4">@Model.PostModel.Title</h1>
+            <div class="lead">
+                by
+                @Html.Encode(Model.PostModel.Author)
+            </div>
+            @if (Model.PostModel.AuthorId == User.Identity.GetUserId() || User.IsInRole("admin") || User.IsInRole("moderator"))
+            {
+                <div class="inline">
+                    <span align="right">
+                        @Html.ActionLink("Edit", "Edit", new { id = Model.PostModel.Id }, new { @class = "btn btn-primary", style = "color:white" })
+                        @Html.ActionLink("Delete", "Delete", new { id = Model.PostModel.Id }, new { @class = "btn btn-primary", style = "color:white" })
+                    </span>
+                </div>
+            }
+
+            <!-- Date/Time -->
+            <p class="article-content">Posted on @Model.PostModel.PostedAt</p>
+
+            <hr>
+
+            <!-- Preview Image -->
+            <img class="img-fluid rounded img-center" src="@Model.PostModel.PostImage" alt="">
+
+            <hr>
+
+            <!-- Post Content -->
+            @*<p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ducimus, vero, obcaecati, aut, error quam sapiente nemo saepe quibusdam sit excepturi nam quia corporis eligendi eos magni recusandae laborum minus inventore?</p>*@
+
+            <p class="article-content">@Html.Raw(Model.PostModel.Content)</p>
+
+            <hr>
+
+            @Html.ActionLink("Like", "RatePost", new { id = Model.PostModel.Id, ratingType = RatingType.Positive }, new { @class = "btn btn-primary", style = "color:white" })
+            @Html.ActionLink("Dislike", "RatePost", new { id = Model.PostModel.Id, ratingType = RatingType.Negative }, new { @class = "btn btn-primary", style = "color:white" })
+            <div>
+                <p>
+                    Rating: @(Model.PostModel.Rank)
+                </p>
+            </div>
+
+            @Html.Partial("_AddCommentPartial", Model.AddComment)
+
+            @foreach (var comment in Model.Comments.CommentList)
+            {
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" height="50" width="50" src="@comment.AuthorAvatar" alt="">
+                    <div class="media-body">
+                        <h5 class="mt-0">@Html.Encode(comment.Author)</h5>
+                        <p> @Html.Encode(comment.Content) </p>
+                    </div>
+                    <div align="right" class="btn-group-vertical" role="group" aria-label="...">
+                        @if (comment.AuthorId == User.Identity.GetUserId() || User.IsInRole("admin") || User.IsInRole("moderator"))
+                        {
+                            <button type="button" class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("EditComment", "Post", new { id = comment.Id, postId = comment.PostId, callbackPostId = comment.PostId })'" >
+                               Edit
+                            </button>
+                            <button type="button" class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("DeleteComment", "Post", new { id = comment.Id, postId = comment.PostId, callbackPostId = comment.PostId })'" >
+                                Delete
+                            </button>
+                        }
+                        @if (User.Identity.IsAuthenticated && User.Identity.GetUserId() != comment.AuthorId)
+                        {
+                            <button type="button" class="btn btn-sm btn-primary" onclick="location.href='@Url.Action("ReportComment", "Post", new { id = comment.Id, postId = comment.PostId, callbackPostId = comment.PostId })'" >
+                                Report
+                            </button>
+                        }
+                    </div>
+                </div>
+                <div align="right">
+                    @comment.PostedAt
+                </div>
+            }
+        </div>
+        @Html.Partial("_SidebarPartial", Model.SideBar)
+    </div>
+    <!-- /.row -->
+
+</div>

@@ -1,0 +1,20 @@
+﻿@model Blogge.Models.ViewModels.AddCommentViewModel
+
+@if (Request.IsAuthenticated)
+{
+    <div class="card my-4">
+        <h5 class="card-header">Leave a Comment:</h5>
+        <div class="card-body">
+
+            @using (Html.BeginForm("AddComment", "Post", new { @class = "form-horizontal", role = "form" }, FormMethod.Post))
+            {
+
+                <div class="form-group">
+                    @Html.HiddenFor(model => model.PostId)
+                    @Html.TextAreaFor(m => m.Content, 3, 360, new { @class = "form-control", @maxlength = "700" })
+                </div>
+                <button type="submit" class="btn btn-primary">Add Comment</button>
+            }
+        </div>
+    </div>
+}

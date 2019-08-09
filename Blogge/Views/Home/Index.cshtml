@@ -1,0 +1,49 @@
+﻿@using Blogge.Models.EntityModels
+@model Blogge.Models.ViewModels.HomepageViewModel
+
+<!-- Page Content -->
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-8">
+            <span>
+                Showing: @Model.PostCount posts..  Show
+            </span>
+            <span>@Html.ActionLink("5", "CustomIndex", new { postCount = 5 })</span>
+            <span>@Html.ActionLink("10", "CustomIndex", new { postCount = 10 })</span>
+            <span>@Html.ActionLink("20", "CustomIndex", new { postCount = 20 })</span>
+            <span>@Html.ActionLink("100", "CustomIndex", new { postCount = 100 })</span>
+        </div>
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+            @foreach (var post in Model.LastPosts)
+            {
+                <div class="card mb-4">
+                    @if (post.PostImage != string.Empty)
+                    {
+                        <img class="card-img-top HomePicture" src="@post.PostImage" alt="Card image cap">
+                    }
+                    <div class="card-body">
+                        <h2 class="card-title">@Html.Encode(post.Title)</h2>
+                        <p class="card-text">@Html.Encode(post.SubTitle)</p>
+                        <a href="@Url.Action("SinglePost", "Post", new {@id = post.Id})">
+                            <b>
+                                Read more...
+                            </b>
+                        </a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Posted on @post.PostedAt by @post.Author
+                    </div>
+                </div>
+            }
+
+        </div>
+        @Html.Partial("_SidebarPartial", Model.SideBar)
+    </div>
+</div>
+
+
+
+

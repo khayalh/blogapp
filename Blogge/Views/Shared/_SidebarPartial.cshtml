@@ -1,0 +1,59 @@
+﻿@model Blogge.Models.ViewModels.SidebarContentViewModel
+<!-- Sidebar Widgets Column -->
+<div class="col-md-4">
+
+    <!-- Search Widget -->
+    <div class="card my-4">
+        <h5 class="card-header">Search</h5>
+        <div class="card-body">
+            @using (Html.BeginForm("Search", "Home", FormMethod.Get))
+            {
+                <div role="search" method="get" class="input-group">
+                    @Html.TextBoxFor(m => m.SearchModel.Search, new { @class = "form-control", @maxlength = "50" })
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="submit" value="search">Go!</button>
+                    </span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Side Widget -->
+    <div class="card my-4">
+        <h5 class="card-header" align="center">Trending</h5>
+        <div class="card-body">
+            <ul class="list-group">
+                @foreach (var post in Model.TrendingPosts)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <a href="@Url.Action("SinglePost", "Post", new {@id = post.Id})" }>
+                            <b class="side-text">@Html.Encode(post.Title)</b>
+                        </a>
+                        <span class="badge badge-primary badge-pill">@post.Rank</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+    <!-- Side Widget -->
+    <div class="card my-4">
+        <h5 class="card-header" align="center">Last commented</h5>
+        <div class="card-body">
+            <div class="list-group">
+                @foreach (var post in Model.LastCommentedPosts)
+                {
+                    <a class="list-group-item list-group-item-action flex-column align-items-start" href="@Url.Action("SinglePost", "Post", new {@id = post.Id})">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@post.Title</h5>
+                            <small>@post.PostedAt</small>
+                        </div>
+                        <p class="mb-1">@post.SubTitle</p>
+                        <small>@post.Author</small> 
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>

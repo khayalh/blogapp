@@ -1,0 +1,66 @@
+﻿@model Blogge.Models.ViewModels.ReportManagerViewModel
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="box-title">
+            <b>Report Centre</b>
+        </h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="panel-body">
+        <table class="table table-hover table-bordered" id="UsersWithRoles">
+            <thead>
+            <tr>
+                <th scope="col"><b>Report ID</b></th>
+                <th scope="col"><b>Comment author</b></th>
+                <th scope="col"><b>Comment text</b></th>
+                <th scope="col"><b>Report text</b></th>
+                <th scope="col"><b>Report sender</b></th>
+                <th scope="col"><b>Status</b></th>
+                <th scope="col"><b>Life state</b></th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var report in Model.AllReports)
+            {
+                <tr>
+                    <th scope="row">@report.Id</th>
+                    <td>@Html.Encode(report.Comment.Author)</td>
+                    <td class="text-break">@Html.Encode(report.Comment.Content)</td>
+                    <td class="text-break">@Html.Encode(report.ReportText)</td>
+                    <td>@Html.Encode(report.SenderName)</td>
+                    <td>@report.Status</td>
+                    <td>@report.LifeStatus</td>
+
+                    <td style="text-align: center">
+
+                        @Html.ActionLink("Block", "BlockComment", new {commentId = report.Comment.Id}, new {@class = "report-buttons btn btn-primary "})
+
+                        @if (User.IsInRole("admin"))
+                        {
+                            @Html.ActionLink("Delete report", "DeleteReport", new {reportId = report.Id}, new {@class = "report-buttons btn btn-primary"})
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+
+        $(function () {
+            $('#UsersWithRoles').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true
+            });
+        });
+    </script>
+}

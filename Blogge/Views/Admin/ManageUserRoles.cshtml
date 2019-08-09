@@ -1,0 +1,54 @@
+﻿@model Blogge.Models.ViewModels.AllUserRoleViewModel
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="box-title">
+            <b>Users with Roles</b>
+        </h3>
+    </div>
+    <!-- /.box-header -->
+    <div class="panel-body">
+        <table class="table table-hover table-bordered table-condensed" id="UsersWithRoles">
+            <thead>
+                <tr>
+                    <td><b>Username</b></td>
+                    <td><b>Roles</b></td>
+                </tr>
+            </thead>
+            @foreach (var user in Model.AllUsers)
+            {
+                <tr>
+                    <td>@user.Username</td>
+                    <td>
+                        @using (Html.BeginForm("ChangeRole", "Admin", new { @class = "form-horizontal", UserId = user.UserId }, FormMethod.Post))
+                        {
+                            @Html.DropDownList("SelectedRole", user.AvailableRoles)
+                            <input type="submit" value="Change Role" class = "btn btn-primary" style = "color:white" />
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+    <div class="panel-footer">
+        <p class="box-title"><b>Total Users till @String.Format("{0 : dddd, MMMM d, yyyy}", DateTime.Now)  : </b><span class="label label-primary">@Model.AllUsers.Count()</span></p>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+
+        $(function () {
+            $('#UsersWithRoles').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true
+            });
+        });
+    </script>
+}

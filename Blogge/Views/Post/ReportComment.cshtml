@@ -1,0 +1,17 @@
+﻿@model Blogge.Models.ViewModels.ReportCommentViewModel
+
+@if (Request.IsAuthenticated)
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    using (Html.BeginForm("ReportComment", "Post", new { @class = "form-horizontal", role = "form" }, FormMethod.Post))
+    {
+        <div class="form-group">
+
+            @Html.HiddenFor(model => model.CommentId)
+            @Html.HiddenFor(model => model.CallbackPostId)
+            @Html.LabelFor(m => m.Content)
+            @Html.TextBoxFor(m => m.Content, new {@class = "form-control", @maxlength = "150" })
+        </div>
+        <button type="submit" class="btn btn-primary">Send report</button>
+    }
+}
