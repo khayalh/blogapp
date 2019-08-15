@@ -233,10 +233,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-Blogge-20180410101633.mdf" />
-    <Content Include="App_Data\aspnet-Blogge-20180410101633_log.ldf">
+    <None Include="App_Data\aspnet-Blogge-20180410101633.mdf" />
+    <None Include="App_Data\aspnet-Blogge-20180410101633_log.ldf">
       <DependentUpon>aspnet-Blogge-20180410101633.mdf</DependentUpon>
-    </Content>
+    </None>
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
