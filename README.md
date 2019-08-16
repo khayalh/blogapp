@@ -1,0 +1,1 @@
+[![Build Status](https://dev.azure.com/khayalha/IaCProject/_apis/build/status/IaCProject-CI?branchName=master)](https://dev.azure.com/khayalha/IaCProject/_build/latest?definitionId=1&branchName=master)
